@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block page_title %}Admin Dashboard{% endblock %}
+{% block content %}
+<div class="welcome-row">
+    <div><span class="eyebrow">ADMINISTRATION</span><h1>System Overview</h1><p>Monitor users, predictions, models and datasets.</p></div>
+</div>
+<div class="stats-grid five">
+    <div class="stat-card"><span>Users</span><strong>{{ total_users }}</strong><small>Registered users</small></div>
+    <div class="stat-card"><span>Predictions</span><strong>{{ total_predictions }}</strong><small>All records</small></div>
+    <div class="stat-card"><span>Datasets</span><strong>{{ total_datasets }}</strong><small>Uploaded datasets</small></div>
+    <div class="stat-card"><span>Models</span><strong>{{ total_models }}</strong><small>Tracked disease models</small></div>
+    <div class="stat-card"><span>Messages</span><strong>{{ unread_messages }}</strong><small>Unread contact messages</small></div>
+</div>
+<div class="table-card">
+<div class="card-header"><div><h2>Recent Predictions</h2><p>Latest activity across users.</p></div><a href="{{ url_for('admin_predictions') }}">View all →</a></div>
+{% if recent_predictions %}
+<div class="table-wrap"><table><thead><tr><th>User</th><th>Disease</th><th>Risk</th><th>Probability</th><th>Date</th></tr></thead><tbody>
+{% for p in recent_predictions %}<tr><td>{{ p.user.name }}</td><td>{{ p.disease }}</td><td><span class="risk {{ p.risk_level|lower }}">{{ p.risk_level }}</span></td><td>{{ p.probability }}%</td><td>{{ p.created_at.strftime("%Y-%m-%d %H:%M") }}</td></tr>{% endfor %}
+</tbody></table></div>
+{% else %}<div class="empty-state">No predictions recorded yet.</div>{% endif %}
+</div>
+{% endblock %}

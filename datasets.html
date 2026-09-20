@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Dataset Management{% endblock %}
+{% block page_title %}Dataset Management{% endblock %}
+{% block content %}
+<div class="page-heading"><span class="eyebrow">DATA</span><h1>Datasets</h1><p>Upload CSV datasets and track their metadata.</p></div>
+<form class="form-card" method="post" enctype="multipart/form-data">
+<div class="form-grid">
+<label>Dataset Name<input name="name" placeholder="Diabetes dataset"></label>
+<label>Disease<select name="disease">{% for d in diseases %}<option>{{ d }}</option>{% endfor %}</select></label>
+</div>
+<label>CSV File<input type="file" name="dataset" accept=".csv" required></label>
+<button class="btn btn-primary" type="submit">Upload Dataset</button>
+</form>
+<div class="table-card"><div class="table-wrap"><table><thead><tr><th>Name</th><th>Disease</th><th>File</th><th>Records</th><th>Version</th><th>Status</th></tr></thead><tbody>
+{% for d in datasets %}<tr><td>{{ d.name }}</td><td>{{ d.disease }}</td><td>{{ d.filename }}</td><td>{{ d.records }}</td><td>{{ d.version }}</td><td><span class="status active">{{ d.status }}</span></td></tr>
+{% else %}<tr><td colspan="6" class="empty-state">No datasets uploaded.</td></tr>{% endfor %}
+</tbody></table></div></div>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Admin Settings{% endblock %}
+{% block page_title %}Admin Settings{% endblock %}
+{% block content %}
+<div class="page-heading"><span class="eyebrow">SYSTEM</span><h1>Settings</h1><p>Update administrator account details.</p></div>
+<form class="form-card narrow-card" method="post">
+<label>Admin Name<input name="name" value="{{ current_user.name }}" required></label>
+<label>Email<input value="{{ current_user.email }}" disabled></label>
+<label>New Password <small>(leave blank to keep current password)</small><input type="password" name="password"></label>
+<button class="btn btn-primary" type="submit">Save Settings</button>
+</form>
+{% endblock %}

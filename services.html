@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Services - Disease Risk Prediction System{% endblock %}
+{% block content %}
+<section class="page-hero">
+    <span class="eyebrow">SERVICES</span>
+    <h1>What the system provides</h1>
+</section>
+<section class="section">
+    <div class="feature-grid">
+        {% for disease in diseases %}
+        <article class="feature-card"><div class="feature-icon">🧬</div><h3>{{ disease }}</h3><p>Dedicated disease module ready for connection to a trained model.</p></article>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

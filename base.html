@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Disease Risk Prediction System">
+
+    <title>
+        {% block title %}
+        Disease Risk Prediction System
+        {% endblock %}
+    </title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="{% if current_user.is_authenticated %}app-body{% else %}public-body{% endif %}">
+
+
+{% if current_user.is_authenticated %}
+
+<!-- =====================================================
+     LOGGED-IN LAYOUT
+===================================================== -->
+
+<div class="app-shell">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-top">
+
+            <a class="brand sidebar-brand"
+               href="{% if current_user.role == 'admin' %}{{ url_for('admin_dashboard') }}{% else %}{{ url_for('dashboard') }}{% endif %}">
+
+                <span class="brand-icon">♥</span>
+
+                <span>
+                    <b>Disease Risk</b>
+                    <small>Prediction System</small>
+                </span>
+
+            </a>
+
+            <button class="icon-btn sidebar-close"
+                    onclick="toggleSidebar()"
+                    aria-label="Close menu">
+
+                ×
+
+            </button>
+
+        </div>
+
+
+        <!-- PROFILE -->
+
+        <div class="profile-mini">
+
+            <div class="avatar">
+                {{ current_user.name[:1]|upper }}
+            </div>
+
+            <div>
+
+                <strong>
+                    {{ current_user.name }}
+                </strong>
+
+                <small>
+                    {% if current_user.role == "admin" %}
+                        Administrator
+                    {% else %}
+                        Patient User
+                    {% endif %}
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <!-- SIDEBAR NAVIGATION -->
+
+        <nav class="side-nav">
+
+            {% if current_user.role == "admin" %}
+
+                <div class="nav-section">
+                    MAIN
+                </div>
+
+                <a href="{{ url_for('admin_dashboard') }}"
+                   class="{% if request.endpoint == 'admin_dashboard' %}active{% endif %}">
+                    <span>⌂</span>
+                    Dashboard
+                </a>
+
+                <a href="{{ url_for('admin_users') }}"
+                   class="{% if request.endpoint == 'admin_users' %}active{% endif %}">
+                    <span>👥</span>
+                    Users
+                </a>
+
+                <a href="{{ url_for('admin_predictions') }}"
+                   class="{% if request.endpoint == 'admin_predictions' %}active{% endif %}">
+                    <span>🩺</span>
+                    Predictions
+                </a>
+
+                <a href="{{ url_for('admin_analytics') }}"
+                   class="{% if request.endpoint == 'admin_analytics' %}active{% endif %}">
+                    <span>▥</span>
+                    Analytics
+                </a>
+
+
+                <div class="nav-section">
+                    MANAGEMENT
+                </div>
+
+                <a href="{{ url_for('admin_datasets') }}"
+                   class="{% if request.endpoint == 'admin_datasets' %}active{% endif %}">
+                    <span>▣</span>
+                    Datasets
+                </a>
+
+                <a href="{{ url_for('admin_models') }}"
+                   class="{% if request.endpoint == 'admin_models' %}active{% endif %}">
+                    <span>🤖</span>
+                    ML Models
+                </a>
+
+                <a href="{{ url_for('admin_reports') }}"
+                   class="{% if request.endpoint == 'admin_reports' %}active{% endif %}">
+                    <span>▤</span>
+                    Reports
+                </a>
+
+                <a href="{{ url_for('admin_messages') }}"
+                   class="{% if request.endpoint == 'admin_messages' %}active{% endif %}">
+                    <span>✉</span>
+                    Messages
+                </a>
+
+
+                <div class="nav-section">
+                    SYSTEM
+                </div>
+
+                <a href="{{ url_for('admin_settings') }}"
+                   class="{% if request.endpoint == 'admin_settings' %}active{% endif %}">
+                    <span>⚙</span>
+                    Settings
+                </a>
+
+
+            {% else %}
+
+                <div class="nav-section">
+                    MY HEALTH
+                </div>
+
+                <a href="{{ url_for('dashboard') }}"
+                   class="{% if request.endpoint == 'dashboard' %}active{% endif %}">
+                    <span>⌂</span>
+                    Dashboard
+                </a>
+
+                <a href="{{ url_for('predict') }}"
+                   class="{% if request.endpoint == 'predict' %}active{% endif %}">
+                    <span>🩺</span>
+                    Predict Risk
+                </a>
+
+                <a href="{{ url_for('history') }}"
+                   class="{% if request.endpoint == 'history' %}active{% endif %}">
+                    <span>◷</span>
+                    Prediction History
+                </a>
+
+                <a href="{{ url_for('profile') }}"
+                   class="{% if request.endpoint == 'profile' %}active{% endif %}">
+                    <span>👤</span>
+                    Profile
+                </a>
+
+
+                <div class="nav-section">
+                    WEBSITE
+                </div>
+
+                <a href="{{ url_for('home') }}">
+                    <span>↗</span>
+                    Public Website
+                </a>
+
+                <a href="{{ url_for('contact') }}">
+                    <span>✉</span>
+                    Contact
+                </a>
+
+            {% endif %}
+
+        </nav>
+
+
+        <!-- SIDEBAR BOTTOM -->
+
+        <div class="sidebar-bottom">
+
+            <button class="theme-switch"
+                    onclick="toggleTheme()">
+
+                <span id="themeIcon">
+                    ☀
+                </span>
+
+                <span>
+                    Light / Dark
+                </span>
+
+            </button>
+
+
+            <a class="logout-link"
+               href="{{ url_for('logout') }}">
+
+                <span>⇥</span>
+                Logout
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN AREA -->
+
+    <div class="main-area">
+
+        <!-- TOPBAR -->
+
+        <header class="app-topbar">
+
+            <button class="icon-btn menu-open"
+                    onclick="toggleSidebar()"
+                    aria-label="Open menu">
+
+                ☰
+
+            </button>
+
+
+            <div>
+
+                <div class="topbar-title">
+
+                    {% block page_title %}
+                    Dashboard
+                    {% endblock %}
+
+                </div>
+
+                <div class="topbar-subtitle">
+                    Disease Risk Prediction System
+                </div>
+
+            </div>
+
+
+            <div class="topbar-actions">
+
+                <button class="icon-btn"
+                        onclick="toggleTheme()"
+                        title="Toggle dark mode">
+
+                    ◐
+
+                </button>
+
+                <div class="top-avatar">
+                    {{ current_user.name[:1]|upper }}
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- CONTENT AREA -->
+
+        <main class="page-content">
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+
+                {% if messages %}
+
+                    <div class="flash-wrap">
+
+                        {% for category, message in messages %}
+
+                            <div class="flash {{ category }}">
+                                {{ message }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+            {% endwith %}
+
+
+{% else %}
+
+<!-- =====================================================
+     PUBLIC WEBSITE
+===================================================== -->
+
+<header class="navbar">
+
+    <a class="brand"
+       href="{{ url_for('home') }}">
+
+        <span class="brand-icon">
+            ♥
+        </span>
+
+        <span>
+            <b>Disease Risk</b>
+            <small>Prediction System</small>
+        </span>
+
+    </a>
+
+
+    <button class="nav-toggle"
+            onclick="toggleNav()">
+
+        ☰
+
+    </button>
+
+
+    <nav id="mainNav">
+
+        <a href="{{ url_for('home') }}">
+            Home
+        </a>
+
+        <a href="{{ url_for('about') }}">
+            About
+        </a>
+
+        <a href="{{ url_for('services') }}">
+            Services
+        </a>
+
+        <a href="{{ url_for('contact') }}">
+            Contact
+        </a>
+
+
+        <button class="theme-public"
+                onclick="toggleTheme()"
+                title="Toggle theme">
+
+            ◐
+
+        </button>
+
+
+        <a class="nav-outline"
+           href="{{ url_for('login') }}">
+            Login
+        </a>
+
+
+        <a class="nav-button"
+           href="{{ url_for('register') }}">
+            Get Started
+        </a>
+
+    </nav>
+
+</header>
+
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+
+    {% if messages %}
+
+        <div class="flash-wrap public-flashes">
+
+            {% for category, message in messages %}
+
+                <div class="flash {{ category }}">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% endif %}
+
+{% endwith %}
+
+
+<main class="public-main">
+
+{% endif %}
+
+
+<!-- =====================================================
+     ONLY ONE CONTENT BLOCK
+===================================================== -->
+
+{% block content %}
+{% endblock %}
+
+
+<!-- =====================================================
+     CLOSE LAYOUT
+===================================================== -->
+
+{% if current_user.is_authenticated %}
+
+        </main>
+
+    </div>
+
+</div>
+
+
+{% else %}
+
+</main>
+
+
+<!-- PUBLIC FOOTER -->
+
+<footer class="footer">
+
+    <div class="footer-grid">
+
+        <div>
+
+            <a class="brand footer-brand"
+               href="{{ url_for('home') }}">
+
+                <span class="brand-icon">
+                    ♥
+                </span>
+
+                <span>
+                    <b>Disease Risk</b>
+                    <small>Prediction System</small>
+                </span>
+
+            </a>
+
+            <p>
+                Machine-learning-based health risk assessment
+                for educational and preventive awareness.
+            </p>
+
+        </div>
+
+
+        <div>
+
+            <h3>
+                Quick Links
+            </h3>
+
+            <a href="{{ url_for('home') }}">
+                Home
+            </a>
+
+            <a href="{{ url_for('about') }}">
+                About
+            </a>
+
+            <a href="{{ url_for('services') }}">
+                Services
+            </a>
+
+            <a href="{{ url_for('contact') }}">
+                Contact
+            </a>
+
+        </div>
+
+
+        <div>
+
+            <h3>
+                User
+            </h3>
+
+            <a href="{{ url_for('login') }}">
+                Login
+            </a>
+
+            <a href="{{ url_for('register') }}">
+                Register
+            </a>
+
+        </div>
+
+
+        <div>
+
+            <h3>
+                Contact
+            </h3>
+
+            <p>
+                📍 Chitwan, Nepal
+            </p>
+
+            <p>
+                ✉ support@diseaserisk.local
+            </p>
+
+            <p>
+                ☎ +977 98XXXXXXXX
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        <span>
+            © 2026 Disease Risk Prediction System
+        </span>
+
+        <span>
+            Privacy • Terms • Your Health, Our Priority ♥
+        </span>
+
+    </div>
+
+</footer>
+
+{% endif %}
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+
+{% block scripts %}
+{% endblock %}
+
+
+</body>
+</html>

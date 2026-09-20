@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Contact - Disease Risk Prediction System{% endblock %}
+{% block content %}
+<section class="page-hero">
+    <span class="eyebrow">CONTACT</span>
+    <h1>Send us a message</h1>
+    <p>Use this form for project feedback or support.</p>
+</section>
+<section class="section narrow">
+    <form class="form-card" method="post">
+        <div class="form-grid">
+            <label>Name<input name="name" required></label>
+            <label>Email<input type="email" name="email" required></label>
+        </div>
+        <label>Subject<input name="subject"></label>
+        <label>Message<textarea name="message" rows="6" required></textarea></label>
+        <button class="btn btn-primary" type="submit">Send Message</button>
+    </form>
+</section>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Messages{% endblock %}
+{% block page_title %}Contact Messages{% endblock %}
+{% block content %}
+<div class="page-heading"><span class="eyebrow">COMMUNICATION</span><h1>Messages</h1><p>Review messages submitted from the public website.</p></div>
+<div class="message-list">
+{% for m in messages %}
+<article class="message-card {% if not m.is_read %}unread{% endif %}">
+<div class="message-top"><div><strong>{{ m.name }}</strong><span>{{ m.email }}</span></div><small>{{ m.created_at.strftime("%Y-%m-%d %H:%M") }}</small></div>
+<h3>{{ m.subject or 'No subject' }}</h3><p>{{ m.message }}</p>
+{% if not m.is_read %}<a class="small-btn" href="{{ url_for('mark_message_read', message_id=m.id) }}">Mark as read</a>{% else %}<span class="muted">Read</span>{% endif %}
+</article>
+{% else %}<div class="empty-state">No messages.</div>{% endfor %}
+</div>
+{% endblock %}

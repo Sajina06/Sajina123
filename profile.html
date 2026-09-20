@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Profile{% endblock %}
+{% block page_title %}Profile{% endblock %}
+{% block content %}
+<div class="page-heading"><span class="eyebrow">ACCOUNT</span><h1>My Profile</h1><p>Update your personal account details.</p></div>
+<form class="form-card narrow-card" method="post">
+    <label>Full Name<input name="name" value="{{ current_user.name }}" required></label>
+    <label>Email<input type="email" name="email" value="{{ current_user.email }}" required></label>
+    <label>New Password <small>(leave blank to keep current password)</small><input type="password" name="password"></label>
+    <button class="btn btn-primary" type="submit">Save Changes</button>
+</form>
+{% endblock %}

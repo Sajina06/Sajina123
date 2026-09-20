@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Home - Disease Risk Prediction System{% endblock %}
+{% block content %}
+<section class="hero">
+    <div class="hero-copy">
+        <span class="eyebrow">AI-ASSISTED HEALTH AWARENESS</span>
+        <h1>Understand your <span>health risk</span> with data.</h1>
+        <p>Explore risk indicators for multiple diseases through a simple educational prediction interface.</p>
+        <div class="hero-actions">
+            <a class="btn btn-primary" href="{{ url_for('register') }}">Start Prediction →</a>
+            <a class="btn btn-secondary" href="{{ url_for('services') }}">Explore Services</a>
+        </div>
+        <div class="hero-note">⚠ Educational risk estimation only — not a medical diagnosis.</div>
+    </div>
+    <div class="hero-card">
+        <div class="pulse-ring">♥</div>
+        <h3>Multi-Disease</h3>
+        <p>Diabetes • Heart • Kidney • Liver • Hypertension</p>
+        <div class="mini-stat"><strong>5</strong><span>Risk modules</span></div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="section-heading">
+        <span class="eyebrow">FEATURES</span>
+        <h2>One platform, multiple health insights</h2>
+    </div>
+    <div class="feature-grid">
+        <article class="feature-card"><div class="feature-icon">🩺</div><h3>Risk Prediction</h3><p>Submit health indicators and receive an educational risk estimate.</p></article>
+        <article class="feature-card"><div class="feature-icon">◷</div><h3>History</h3><p>Keep your previous prediction results in one account.</p></article>
+        <article class="feature-card"><div class="feature-icon">🔐</div><h3>Secure Accounts</h3><p>Separate user and administrator areas with password hashing.</p></article>
+    </div>
+</section>
+{% endblock %}

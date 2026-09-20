@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}ML Models{% endblock %}
+{% block page_title %}ML Model Management{% endblock %}
+{% block content %}
+<div class="page-heading"><span class="eyebrow">MACHINE LEARNING</span><h1>ML Models</h1><p>Track the five disease-specific model slots.</p></div>
+<div class="model-grid">
+{% for m in models %}
+<div class="model-card"><div class="model-head"><span class="feature-icon">🤖</span><span class="status {{ 'active' if m.status == 'Loaded' else 'inactive' }}">{{ m.status }}</span></div><h3>{{ m.disease }}</h3><p>{{ m.model_name }}</p><div class="model-meta"><span>File</span><strong>{{ m.filename }}</strong></div><div class="model-meta"><span>Version</span><strong>{{ m.version }}</strong></div></div>
+{% endfor %}
+</div>
+{% endblock %}

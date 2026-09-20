@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Prediction Management{% endblock %}
+{% block page_title %}Prediction Management{% endblock %}
+{% block content %}
+<div class="page-heading"><span class="eyebrow">MANAGEMENT</span><h1>All Predictions</h1><p>Filter prediction records by disease and risk.</p></div>
+<form class="filter-bar" method="get">
+<select name="disease"><option value="">All Diseases</option>{% for d in diseases %}<option value="{{ d }}" {% if selected_disease == d %}selected{% endif %}>{{ d }}</option>{% endfor %}</select>
+<select name="risk"><option value="">All Risk Levels</option>{% for r in ['Low','Medium','High'] %}<option value="{{ r }}" {% if selected_risk == r %}selected{% endif %}>{{ r }}</option>{% endfor %}</select>
+<button class="btn btn-primary" type="submit">Apply Filter</button>
+</form>
+<div class="table-card"><div class="table-wrap"><table><thead><tr><th>User</th><th>Disease</th><th>Risk</th><th>Probability</th><th>Age</th><th>Date</th></tr></thead><tbody>
+{% for p in predictions %}<tr><td>{{ p.user.name }}</td><td>{{ p.disease }}</td><td><span class="risk {{ p.risk_level|lower }}">{{ p.risk_level }}</span></td><td>{{ p.probability }}%</td><td>{{ p.age }}</td><td>{{ p.created_at.strftime("%Y-%m-%d %H:%M") }}</td></tr>
+{% else %}<tr><td colspan="6" class="empty-state">No predictions match the filter.</td></tr>{% endfor %}
+</tbody></table></div></div>
+{% endblock %}

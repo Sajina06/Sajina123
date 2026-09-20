@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Reports{% endblock %}
+{% block page_title %}Reports{% endblock %}
+{% block content %}
+<div class="page-heading"><span class="eyebrow">REPORTS</span><h1>System Reports</h1><p>Summary and CSV export tools.</p></div>
+<div class="stats-grid three">
+<div class="stat-card"><span>Total Users</span><strong>{{ total_users }}</strong></div>
+<div class="stat-card"><span>Total Predictions</span><strong>{{ total_predictions }}</strong></div>
+<div class="stat-card"><span>Total Datasets</span><strong>{{ total_datasets }}</strong></div>
+</div>
+<div class="content-card"><h2>Prediction Export</h2><p>Download all prediction records as a CSV file.</p><a class="btn btn-primary" href="{{ url_for('prediction_csv') }}">Download predictions.csv</a></div>
+{% endblock %}

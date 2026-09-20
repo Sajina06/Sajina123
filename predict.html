@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Predict Risk{% endblock %}
+{% block page_title %}Predict Risk{% endblock %}
+{% block content %}
+<div class="page-heading"><span class="eyebrow">RISK ASSESSMENT</span><h1>New Prediction</h1><p>Enter the available health indicators below.</p></div>
+
+<div class="predict-layout">
+    <form class="form-card" method="post">
+        <div class="form-grid">
+            <label>Disease
+                <select name="disease" required>
+                    <option value="">Select disease</option>
+                    {% for disease in diseases %}<option>{{ disease }}</option>{% endfor %}
+                </select>
+            </label>
+            <label>Age<input type="number" name="age" min="1" max="120" required></label>
+            <label>Gender<select name="gender"><option>Male</option><option>Female</option><option>Other</option></select></label>
+            <label>Height (cm)<input type="number" step="0.1" name="height"></label>
+            <label>Weight (kg)<input type="number" step="0.1" name="weight"></label>
+            <label>Blood Pressure (mmHg)<input type="number" step="0.1" name="blood_pressure"></label>
+            <label>Blood Sugar (mg/dL)<input type="number" step="0.1" name="blood_sugar"></label>
+            <label>Cholesterol (mg/dL)<input type="number" step="0.1" name="cholesterol"></label>
+            <label>Smoking<select name="smoking"><option>No</option><option>Yes</option></select></label>
+            <label>Family History<select name="family_history"><option>No</option><option>Yes</option></select></label>
+        </div>
+        <button class="btn btn-primary" type="submit">Calculate Risk →</button>
+        <p class="form-note">This starter uses a demo rule-based estimator. It is not a medical diagnosis.</p>
+    </form>
+
+    {% if submitted and prediction %}
+    <div class="result-card">
+        <div class="result-icon">♥</div>
+        <span class="eyebrow">RESULT</span>
+        <h2>{{ prediction.disease }}</h2>
+        <div class="risk-big {{ prediction.risk_level|lower }}">{{ prediction.risk_level }} Risk</div>
+        <div class="probability">{{ prediction.probability }}%</div>
+        <p>{{ prediction.result }}</p>
+        <a class="btn btn-secondary full" href="{{ url_for('history') }}">View History</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
